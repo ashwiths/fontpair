@@ -628,125 +628,7 @@ function PreviewLibrary() {
   )
 }
 
-const CARDS = [
-  {
-    topic: 'LIVE PLAYGROUND',
-    title: 'Live Font Preview',
-    body: 'Render and inspect typography systems instantly. Toggle weights, scale tracking, and modify alignment in real-time.',
-    preview: <PreviewLiveFont />,
-  },
-  {
-    topic: 'DESIGN SYSTEMS',
-    title: 'Precision Font Pairings',
-    body: 'Discover typography that matches naturally. Our algorithm evaluates contrast ratios and geometric weights.',
-    preview: <PreviewPairing />,
-  },
-  {
-    topic: 'VISUAL METRICS',
-    title: 'Side-by-Side Compare',
-    body: 'Compare x-heights, kerning variables, and anatomical metrics to guarantee legibility across layouts.',
-    preview: <PreviewCompare />,
-  },
-  {
-    topic: 'DIRECT INTEGRATION',
-    title: 'Copy CSS Instantly',
-    body: 'Copy clean, production-ready CSS variables or utility classes in one click directly into your stylesheet.',
-    preview: <PreviewCSS />,
-  },
-  {
-    topic: 'WORKSPACE STORAGE',
-    title: 'Save Custom Libraries',
-    body: 'Archive combinations in personalized cloud libraries, ready to share with design teams and stakeholders.',
-    preview: <PreviewLibrary />,
-  },
-]
 
-function StackingCard({ card, index, totalCards, scrollYProgress }) {
-  // Each card gets an equal slice of the scroll progress
-  const cardStart = index / totalCards
-  const cardEnd = (index + 1) / totalCards
-
-  // Define clean fade-in and fade-out timeline thresholds
-  let opacityInputRange = []
-  let opacityOutputRange = []
-  let scaleInputRange = []
-  let scaleOutputRange = []
-
-  if (index === 0) {
-    // Card 0: Starts active, fades out as Card 1 appears
-    opacityInputRange = [0, cardEnd - 0.05, cardEnd + 0.05, 1]
-    opacityOutputRange = [1, 1, 0, 0]
-
-    scaleInputRange = [0, cardEnd - 0.05, cardEnd + 0.05, 1]
-    scaleOutputRange = [1, 1, 0.96, 0.96]
-  } else if (index === totalCards - 1) {
-    // Last Card: Fades in, stays active until scroll ends
-    opacityInputRange = [0, cardStart - 0.05, cardStart + 0.05, 1]
-    opacityOutputRange = [0, 0, 1, 1]
-
-    scaleInputRange = [0, cardStart - 0.05, cardStart + 0.05, 1]
-    scaleOutputRange = [0.96, 0.96, 1, 1]
-  } else {
-    // Middle Cards: Fade in, stay active, then fade out for the next card
-    opacityInputRange = [0, cardStart - 0.05, cardStart + 0.05, cardEnd - 0.05, cardEnd + 0.05, 1]
-    opacityOutputRange = [0, 0, 1, 1, 0, 0]
-
-    scaleInputRange = [0, cardStart - 0.05, cardStart + 0.05, cardEnd - 0.05, cardEnd + 0.05, 1]
-    scaleOutputRange = [0.96, 0.96, 1, 1, 0.96, 0.96]
-  }
-
-  const opacity = useTransform(scrollYProgress, opacityInputRange, opacityOutputRange)
-  const scale = useTransform(scrollYProgress, scaleInputRange, scaleOutputRange)
-
-  // Dynamically disable pointer events for inactive cards to prevent transparent card hijacking
-  const pointerEvents = useTransform(opacity, (v) => v > 0.5 ? 'auto' : 'none')
-
-  return (
-    <motion.div
-      style={{ opacity, scale, zIndex: index + 1, pointerEvents }}
-      className="absolute inset-0 flex items-center justify-center"
-    >
-      <div
-        className="w-full relative rounded-2xl border border-white/[0.07]"
-        style={{ maxWidth: '1100px', margin: '0 1.5rem', backgroundColor: 'rgba(13, 13, 20, 0.96)' }}
-      >
-        {/* Top shimmer */}
-        <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/8 to-transparent" style={{ height: '1px' }} />
-
-        {/* Split layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0' }} className="md:!grid-cols-[2fr_3fr]">
-
-          {/* Left: Text Content */}
-          <div className="flex flex-col justify-between" style={{ padding: '2rem 2rem 1.5rem' }}>
-            <div>
-              <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
-                <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-600 uppercase">{card.topic}</span>
-                <span className="text-[10px] font-mono text-[#4cede1]/60 bg-[#4cede1]/5 border border-[#4cede1]/10 rounded-full" style={{ padding: '0.2rem 0.6rem' }}>
-                  {(index + 1).toString().padStart(2, '0')}
-                </span>
-              </div>
-              <h3 className="text-white font-light tracking-tight leading-tight" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', marginBottom: '0.875rem' }}>
-                {card.title}
-              </h3>
-              <p className="text-neutral-500 font-light leading-relaxed" style={{ fontSize: '0.875rem' }}>
-                {card.body}
-              </p>
-            </div>
-            <div className="flex justify-between items-center border-t border-white/[0.05]" style={{ paddingTop: '1rem', marginTop: '1.5rem' }}>
-              <span className="text-[9px] font-mono text-neutral-700 tracking-[0.2em] uppercase">fontpair.co</span>
-              <span className="text-[9px] font-mono text-neutral-700">{index + 1} / {totalCards}</span>
-            </div>
-          </div>
-
-          {/* Right: Interactive Preview */}
-          <div className="border-t md:border-t-0 md:border-l border-white/[0.05]" style={{ padding: '1.25rem', minHeight: '260px' }}>
-            {card.preview}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
 
 /* ────────────────────────────────────────────────────────
    Grid Features Data
@@ -788,7 +670,7 @@ const FEATURES = [
    Page Component
 ──────────────────────────────────────────────────────── */
 export default function LandingPage() {
-  const containerRef = useRef(null)
+
 
   // Initialize Lenis smooth scroll
   useEffect(() => {
@@ -814,16 +696,7 @@ export default function LandingPage() {
     }
   }, [])
 
-  // Hook scroll progress of the sticky cards track
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end end'],
-  })
 
-  const totalCards = CARDS.length
-
-  // Stable track height for smooth scroll duration and zero empty layout gaps
-  const cardsSectionHeight = '1400px'
 
   return (
     <main className="bg-[#030303] min-h-screen relative select-none w-full flex flex-col items-center" style={{ overflowX: 'clip' }}>
@@ -924,22 +797,77 @@ export default function LandingPage() {
         <LivePreviewSandbox />
       </div>
 
-      {/* 3. STICKY STACKING CARDS SECTION */}
-      <div className="w-full flex flex-col items-center text-center" style={{ padding: '6rem 1.5rem 2rem' }}>
-        <span className="text-[10px] font-mono tracking-[0.35em] text-[#4cede1]/70 uppercase block" style={{ marginBottom: '1rem' }}>Platform Features</span>
-        <h2 className="text-white font-light tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>What You Can Do</h2>
-      </div>
-      <section ref={containerRef} style={{ height: cardsSectionHeight }} className="relative w-full z-20">
-        <div className="sticky w-full" style={{ height: '520px', top: 'calc(50vh - 260px)', position: 'sticky' }}>
-          {CARDS.map((card, i) => (
-            <StackingCard
-              key={i}
-              card={card}
-              index={i}
-              totalCards={totalCards}
-              scrollYProgress={scrollYProgress}
-            />
-          ))}
+      {/* 3. TYPOGRAPHY COMPARISON SHOWCASE */}
+      <section className="w-full relative z-20 flex flex-col items-center" style={{ padding: '6rem 1.5rem 4rem' }}>
+        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto' }}>
+          
+          {/* Section Header */}
+          <div className="text-center" style={{ marginBottom: '4rem' }}>
+            <span className="text-[10px] font-mono tracking-[0.35em] text-[#4cede1]/70 uppercase block" style={{ marginBottom: '1rem' }}>
+              Visual Analysis
+            </span>
+            <h2 className="text-white font-light tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1.25rem' }}>
+              Compare Typography Side by Side
+            </h2>
+            <p className="text-neutral-500 font-light leading-relaxed mx-auto" style={{ fontSize: '1rem', maxWidth: '540px' }}>
+              Evaluate letterforms, visual metrics, and geometric weight contrast to build cohesive interface scales.
+            </p>
+          </div>
+
+          {/* Main Feature Box: Premium Glassmorphism Card */}
+          <div
+            className="w-full relative rounded-2xl border border-white/[0.07] bg-[#0c0c12]/80 backdrop-blur-2xl overflow-hidden shadow-2xl"
+            style={{ minHeight: '480px' }}
+          >
+            {/* Top shimmer highlight line */}
+            <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/8 to-transparent" style={{ height: '1px' }} />
+
+            {/* Split layout (2 columns on md/lg, 1 on mobile) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0' }} className="md:!grid-cols-[2fr_3fr]">
+
+              {/* Left Side Content: Explanation */}
+              <div className="flex flex-col justify-between" style={{ padding: '3rem 2.5rem' }}>
+                <div>
+                  <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-600 uppercase block" style={{ marginBottom: '1rem' }}>
+                    Metrics Inspector
+                  </span>
+                  <h3 className="text-white font-light tracking-tight leading-tight" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', marginBottom: '1.25rem' }}>
+                    Compare Visual Metrics
+                  </h3>
+                  <p className="text-neutral-400 font-light leading-relaxed" style={{ fontSize: '0.9375rem', marginBottom: '2rem' }}>
+                    Anatomical metrics dictate how a font feels at scale. Match visual rhythm, track letter spacing, and build consistent typographic contrasts seamlessly.
+                  </p>
+
+                  {/* Bullet points */}
+                  <ul className="flex flex-col gap-3">
+                    {[
+                      'Compare letterform x-heights',
+                      'Analyze kerning & character spacing',
+                      'Match visual weight & visual rhythm',
+                      'Build high-fidelity, responsive scales'
+                    ].map((bullet, i) => (
+                      <li key={i} className="flex items-center gap-3 text-neutral-500 font-light" style={{ fontSize: '0.875rem' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#4cede1]/70" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex justify-between items-center border-t border-white/[0.05]" style={{ paddingTop: '1.5rem', marginTop: '3rem' }}>
+                  <span className="text-[9px] font-mono text-neutral-700 tracking-[0.2em] uppercase">fontpair.co</span>
+                  <span className="text-[9px] font-mono text-neutral-700">Metrics Engine v1.0</span>
+                </div>
+              </div>
+
+              {/* Right Side Content: Typography Comparison Preview */}
+              <div className="border-t md:border-t-0 md:border-l border-white/[0.05] flex flex-col justify-center bg-[#07070c]/30" style={{ padding: '2.5rem 2rem' }}>
+                <PreviewCompare />
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </section>
 
