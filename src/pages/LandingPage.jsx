@@ -666,38 +666,48 @@ function StackingCard({ card, index, totalCards, scrollYProgress }) {
   const cardStart = index / totalCards
   const cardEnd = (index + 1) / totalCards
 
-  // Opacity: first card starts visible, others fade in
-  const opacity = useTransform(
-    scrollYProgress,
-    index === 0
-      ? [0, 1]
-      : [cardStart - 0.02, cardStart + 0.02, cardEnd, 1],
-    index === 0
-      ? [1, 1]
-      : [0, 1, 1, 1]
-  )
+  // Define clean fade-in and fade-out timeline thresholds
+  let opacityInputRange = []
+  let opacityOutputRange = []
+  let scaleInputRange = []
+  let scaleOutputRange = []
 
-  // Scale: start at 1, shrink slightly when next cards stack on top
-  const scale = useTransform(
-    scrollYProgress,
-    [cardStart, cardEnd, Math.min(1, cardEnd + 0.15)],
-    [1, 1, index < totalCards - 1 ? 0.95 : 1]
-  )
+  if (index === 0) {
+    // Card 0: Starts active, fades out as Card 1 appears
+    opacityInputRange = [0, cardEnd - 0.05, cardEnd + 0.05, 1]
+    opacityOutputRange = [1, 1, 0, 0]
 
-  // Dim overlay: darken when buried under newer cards
-  const dimOpacity = useTransform(
-    scrollYProgress,
-    [cardEnd, Math.min(1, cardEnd + 0.1)],
-    [0, index < totalCards - 1 ? 0.5 : 0]
-  )
+    scaleInputRange = [0, cardEnd - 0.05, cardEnd + 0.05, 1]
+    scaleOutputRange = [1, 1, 0.96, 0.96]
+  } else if (index === totalCards - 1) {
+    // Last Card: Fades in, stays active until scroll ends
+    opacityInputRange = [0, cardStart - 0.05, cardStart + 0.05, 1]
+    opacityOutputRange = [0, 0, 1, 1]
+
+    scaleInputRange = [0, cardStart - 0.05, cardStart + 0.05, 1]
+    scaleOutputRange = [0.96, 0.96, 1, 1]
+  } else {
+    // Middle Cards: Fade in, stay active, then fade out for the next card
+    opacityInputRange = [0, cardStart - 0.05, cardStart + 0.05, cardEnd - 0.05, cardEnd + 0.05, 1]
+    opacityOutputRange = [0, 0, 1, 1, 0, 0]
+
+    scaleInputRange = [0, cardStart - 0.05, cardStart + 0.05, cardEnd - 0.05, cardEnd + 0.05, 1]
+    scaleOutputRange = [0.96, 0.96, 1, 1, 0.96, 0.96]
+  }
+
+  const opacity = useTransform(scrollYProgress, opacityInputRange, opacityOutputRange)
+  const scale = useTransform(scrollYProgress, scaleInputRange, scaleOutputRange)
+
+  // Dynamically disable pointer events for inactive cards to prevent transparent card hijacking
+  const pointerEvents = useTransform(opacity, (v) => v > 0.5 ? 'auto' : 'none')
 
   return (
     <motion.div
-      style={{ opacity, scale, zIndex: index + 1 }}
-      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+      style={{ opacity, scale, zIndex: index + 1, pointerEvents }}
+      className="absolute inset-0 flex items-center justify-center"
     >
       <div
-        className="pointer-events-auto w-full relative rounded-2xl border border-white/[0.07]"
+        className="w-full relative rounded-2xl border border-white/[0.07]"
         style={{ maxWidth: '1100px', margin: '0 1.5rem', backgroundColor: 'rgba(13, 13, 20, 0.96)' }}
       >
         {/* Top shimmer */}
@@ -733,12 +743,6 @@ function StackingCard({ card, index, totalCards, scrollYProgress }) {
             {card.preview}
           </div>
         </div>
-
-        {/* Dim overlay when stacked under */}
-        <motion.div
-          style={{ opacity: dimOpacity }}
-          className="absolute inset-0 bg-[#030303]/80 z-20 pointer-events-none rounded-2xl"
-        />
       </div>
     </motion.div>
   )
@@ -813,15 +817,13 @@ export default function LandingPage() {
   // Hook scroll progress of the sticky cards track
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start end', 'end end'],
   })
 
   const totalCards = CARDS.length
 
-  // Compact scroll height — 60vh per card
-  const cardsSectionHeight = useMemo(() => {
-    return `${totalCards * 60}vh`
-  }, [totalCards])
+  // Stable track height for smooth scroll duration and zero empty layout gaps
+  const cardsSectionHeight = '1400px'
 
   return (
     <main className="bg-[#030303] min-h-screen relative select-none w-full flex flex-col items-center" style={{ overflowX: 'clip' }}>
@@ -923,8 +925,12 @@ export default function LandingPage() {
       </div>
 
       {/* 3. STICKY STACKING CARDS SECTION */}
+      <div className="w-full flex flex-col items-center text-center" style={{ padding: '6rem 1.5rem 2rem' }}>
+        <span className="text-[10px] font-mono tracking-[0.35em] text-[#4cede1]/70 uppercase block" style={{ marginBottom: '1rem' }}>Platform Features</span>
+        <h2 className="text-white font-light tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>What You Can Do</h2>
+      </div>
       <section ref={containerRef} style={{ height: cardsSectionHeight }} className="relative w-full z-20">
-        <div className="sticky top-0 w-full" style={{ height: '100vh' }}>
+        <div className="sticky w-full" style={{ height: '520px', top: 'calc(50vh - 260px)', position: 'sticky' }}>
           {CARDS.map((card, i) => (
             <StackingCard
               key={i}
@@ -938,37 +944,38 @@ export default function LandingPage() {
       </section>
 
       {/* 4. FEATURES SECTION */}
-      <div className="w-full flex justify-center">
-        <section id="features" className="py-32 w-full relative z-20 max-w-7xl px-6 scroll-mt-12 flex flex-col items-center">
-          <div className="text-center mb-20">
-            <span className="text-xs font-mono tracking-[0.3em] text-[#4cede1] uppercase block mb-4">
+      <section id="features" className="w-full relative z-20 scroll-mt-12 flex flex-col items-center" style={{ padding: '4rem 1.5rem 6rem' }}>
+        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto' }}>
+          <div className="text-center" style={{ marginBottom: '4rem' }}>
+            <span className="text-[10px] font-mono tracking-[0.35em] text-[#4cede1]/70 uppercase block" style={{ marginBottom: '1rem' }}>
               System Features
             </span>
-            <h2 className="text-4xl md:text-5xl font-light text-white tracking-tight">
+            <h2 className="text-white font-light tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
               Engineered for Creators
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full" style={{ gap: '1rem' }}>
             {FEATURES.map((feat, i) => (
               <div
                 key={i}
-                className="p-8 rounded-3xl border border-white/[0.06] bg-[#0c0c12]/70 backdrop-blur-xl flex flex-col items-start text-left shadow-lg hover:border-white/10 transition-all group"
+                className="rounded-xl border border-white/[0.06] bg-[#0c0c12]/70 flex flex-col items-start text-left hover:border-white/10 transition-all group"
+                style={{ padding: '1.5rem' }}
               >
-                <div className="p-3 bg-white/5 rounded-2xl border border-white/5 mb-6 group-hover:bg-[#4cede1]/5 group-hover:border-[#4cede1]/10 transition-all">
+                <div className="bg-white/5 rounded-lg border border-white/5 group-hover:bg-[#4cede1]/5 group-hover:border-[#4cede1]/10 transition-all" style={{ padding: '0.625rem', marginBottom: '1.25rem' }}>
                   {feat.icon}
                 </div>
-                <h3 className="text-xl font-medium text-white mb-3 tracking-wide">
+                <h3 className="text-white font-medium tracking-wide" style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                   {feat.title}
                 </h3>
-                <p className="text-neutral-400 font-light text-sm leading-relaxed">
+                <p className="text-neutral-500 font-light leading-relaxed" style={{ fontSize: '0.8125rem' }}>
                   {feat.desc}
                 </p>
               </div>
             ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {/* 5. FINAL CTA SECTION */}
       <section className="py-32 w-full relative z-20 flex justify-center px-6">
