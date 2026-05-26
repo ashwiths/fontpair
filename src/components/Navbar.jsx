@@ -66,20 +66,23 @@ export default function Navbar({
         }}>
           {/* Logo */}
           <Link to="/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-            <div style={{
-              width: '36px', height: '36px',
-              background: 'linear-gradient(135deg, #7C4DFF, #A855F7)',
-              borderRadius: '10px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(124, 77, 255, 0.35)',
-            }}>
-              <span style={{ color: 'white', fontWeight: 800, fontSize: '1rem', fontFamily: 'Inter, sans-serif' }}>F</span>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" style={{ width: '32px', height: '32px', flexShrink: 0 }}>
+              <defs>
+                <linearGradient id="navBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#8B5CF6" />
+                  <stop offset="100%" stopColor="#A855F7" />
+                </linearGradient>
+              </defs>
+              <rect x="10" y="10" width="100" height="100" rx="28" fill="url(#navBgGrad)" />
+              <path d="M 68,32 C 60,32 54,36 54,46 L 54,58 L 44,58 C 42,58 41,59 41,61 L 41,67 C 41,69 42,70 44,70 L 54,70 L 54,92 C 54,94 55,95 57,95 L 65,95 C 67,95 68,94 68,92 L 68,70 L 76,70 C 78,70 79,69 79,67 L 79,61 C 79,59 78,58 76,58 L 68,58 L 68,48 C 68,45 70,44 73,44 C 74,44 76,44 77,45 C 78,45 79,44 79,42 L 79,35 C 79,33 78,32 76,32 Z" fill="#FFFFFF" />
+              <circle cx="84" cy="84" r="10" fill="#4cede1" />
+              <path d="M 80,84 L 83,87 L 88,81" stroke="#030303" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            </svg>
             <span style={{
               fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '20px',
-              color: 'var(--text-primary)', letterSpacing: '-0.02em',
+              color: '#ffffff', letterSpacing: '-0.02em',
             }}>
-              Font Style <span style={{ color: 'var(--primary)' }}>Changer</span>
+              font.<span style={{ color: '#8B5CF6' }}>save</span>
             </span>
           </Link>
 

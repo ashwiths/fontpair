@@ -262,12 +262,12 @@ export default function HomePage({ darkMode, setDarkMode }) {
               color: '#ffffff',
             }}
             >
-              Font Style <span style={{
+              font.<span style={{
                 background: 'linear-gradient(135deg, #ffffff 10%, #C084FC 50%, #8B5CF6 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-              }}>Changer</span>
+              }}>save</span>
             </h1>
           </div>
 

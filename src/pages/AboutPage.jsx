@@ -175,7 +175,7 @@ export default function AboutPage({ darkMode, setDarkMode }) {
               margin: '0 auto 3.5rem',
               lineHeight: 1.7
             }}>
-              Font Style Changer is a free, modern platform designed for creators, developers, and designers to preview and organize real Google Fonts seamlessly.
+              font.save is a free, modern platform designed for creators, developers, and designers to preview and organize real Google Fonts seamlessly.
             </p>
           </motion.div>
         </div>
