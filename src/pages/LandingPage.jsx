@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Copy, Check, Sparkles, Heart, Layers, Eye } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 import Lenis from 'lenis'
 
 /* ────────────────────────────────────────────────────────
@@ -96,7 +97,7 @@ function HeroShowcase() {
   const pair = SHOWCASE_PAIRS[idx]
 
   return (
-    <div className="rounded-2xl border border-white/[0.07] bg-[#0a0a10] overflow-hidden relative">
+    <div className="rounded-2xl border border-white/[0.07] bg-[#0a0a10] overflow-hidden relative shadow-[0_24px_50px_-12px_rgba(0,0,0,0.7)] hover:border-white/[0.1] transition-all duration-500">
       {/* Top shimmer */}
       <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/8 to-transparent" style={{ height: '1px' }} />
 
@@ -302,48 +303,57 @@ function LivePreviewSandbox() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
             {/* Custom Input Card */}
-            <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d14]" style={{ padding: '1.5rem' }}>
-              <span className="block text-[10px] font-mono tracking-[0.25em] text-[#4cede1]/80 uppercase" style={{ marginBottom: '0.75rem' }}>
+            <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d14] transition-all duration-300 hover:border-white/[0.1]" style={{ padding: '1.5rem' }}>
+              <span className="block text-[10px] font-mono tracking-[0.28em] text-[#4cede1]/80 uppercase" style={{ marginBottom: '0.75rem' }}>
                 Custom Copy
               </span>
               <textarea
                 value={customText}
                 onChange={(e) => setCustomText(e.target.value)}
                 placeholder="Type your own heading to preview..."
-                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.07] text-white placeholder-neutral-600 focus:outline-none focus:border-[#4cede1]/40 focus:bg-white/[0.06] transition-all duration-200 resize-none text-sm leading-relaxed"
-                style={{ height: '5rem', padding: '0.75rem 1rem' }}
+                className="w-full rounded-xl bg-white/[0.02] border border-white/[0.06] text-white placeholder-neutral-600 focus:outline-none focus:border-[#4cede1]/30 focus:bg-white/[0.04] focus:shadow-[0_0_15px_rgba(76,237,225,0.03)] transition-all duration-300 resize-none text-sm leading-relaxed"
+                style={{ height: '5.5rem', padding: '0.875rem 1.125rem' }}
               />
             </div>
 
             {/* Font Pairing Selector */}
-            <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d14]" style={{ padding: '1.5rem' }}>
-              <span className="block text-[10px] font-mono tracking-[0.25em] text-neutral-500 uppercase" style={{ marginBottom: '1rem' }}>
+            <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d14] transition-all duration-300 hover:border-white/[0.1]" style={{ padding: '1.75rem 1.5rem' }}>
+              <span className="block text-[10px] font-mono tracking-[0.28em] text-neutral-500 uppercase" style={{ marginBottom: '1.25rem' }}>
                 Curated Font Pairings
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {PAIRINGS.map((pair, idx) => {
                   const isActive = idx === currentIndex
                   return (
                     <button
                       key={pair.name}
                       onClick={() => setCurrentIndex(idx)}
-                      className={`w-full text-left rounded-xl border transition-all duration-200 cursor-pointer flex justify-between items-center ${
+                      className={`group w-full text-left rounded-xl border cursor-pointer flex justify-between items-center transition-all duration-300 ease-out hover:-translate-y-[1px] ${
                         isActive
-                          ? 'bg-[#4cede1]/[0.06] border-[#4cede1]/20'
-                          : 'bg-white/[0.03] border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.1]'
+                          ? 'bg-[#4cede1]/[0.08] border-[#4cede1]/30 shadow-[0_0_24px_rgba(76,237,225,0.06)]'
+                          : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.05] hover:border-white/[0.12] hover:shadow-[0_4px_16px_rgba(0,0,0,0.2)]'
                       }`}
-                      style={{ padding: '0.875rem 1rem' }}
+                      style={{ padding: '1rem 1.25rem' }}
                     >
                       <div>
-                        <span className="block text-[9px] font-mono font-medium uppercase tracking-[0.2em] text-neutral-500" style={{ marginBottom: '3px' }}>
+                        <span 
+                          className={`block text-[9px] font-mono font-semibold uppercase tracking-[0.22em] transition-colors duration-300 ${
+                            isActive ? 'text-[#4cede1]' : 'text-neutral-500'
+                          }`} 
+                          style={{ marginBottom: '5px' }}
+                        >
                           {pair.name}
                         </span>
-                        <span className={`block font-light leading-none ${isActive ? 'text-white' : 'text-neutral-400'}`} style={{ fontSize: '0.9375rem' }}>
-                          {pair.headlineFont} + {pair.bodyFont}
+                        <span className={`block font-medium tracking-wide transition-colors duration-300 ${isActive ? 'text-white' : 'text-neutral-400'}`} style={{ fontSize: '0.9375rem' }}>
+                          {pair.headlineFont} <span className="text-neutral-600 font-light mx-1">+</span> {pair.bodyFont}
                         </span>
                       </div>
                       <ArrowRight
-                        className={`shrink-0 transition-all duration-300 ${isActive ? 'translate-x-0.5 text-[#4cede1]' : 'text-neutral-700'}`}
+                        className={`shrink-0 transition-all duration-300 ${
+                          isActive 
+                            ? 'translate-x-1 text-[#4cede1] drop-shadow-[0_0_8px_rgba(76,237,225,0.5)]' 
+                            : 'text-neutral-700 group-hover:text-neutral-500 group-hover:translate-x-0.5'
+                        }`}
                         style={{ width: '14px', height: '14px' }}
                       />
                     </button>
@@ -353,56 +363,59 @@ function LivePreviewSandbox() {
             </div>
 
             {/* Pair Metadata */}
-            <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d14]" style={{ padding: '1.25rem 1.5rem' }}>
+            <div className="rounded-2xl border border-white/[0.05] bg-[#0d0d14]/40 backdrop-blur-md transition-all duration-300 hover:border-white/[0.08]" style={{ padding: '1.5rem 1.75rem' }}>
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-600 uppercase">Heading</span>
-                <span className="text-[12px] font-mono text-white/90" style={{ fontFamily: current.headlineFont }}>
-                  {current.headlineFont} · 700
+                <span className="text-[9px] font-mono tracking-[0.28em] text-neutral-500 uppercase">Heading</span>
+                <span className="text-[12px] font-mono font-medium text-[#4cede1]" style={{ fontFamily: current.headlineFont }}>
+                  {current.headlineFont} <span className="text-neutral-600 font-light">·</span> 700
                 </span>
               </div>
-              <div className="bg-white/[0.04]" style={{ height: '1px', margin: '0.75rem 0' }} />
+              <div className="bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" style={{ height: '1px', margin: '1rem 0' }} />
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-600 uppercase">Body</span>
-                <span className="text-[12px] font-mono text-white/90" style={{ fontFamily: current.bodyFont }}>
-                  {current.bodyFont} · 400
+                <span className="text-[9px] font-mono tracking-[0.28em] text-neutral-500 uppercase">Body</span>
+                <span className="text-[12px] font-mono font-medium text-purple-300" style={{ fontFamily: current.bodyFont }}>
+                  {current.bodyFont} <span className="text-neutral-600 font-light">·</span> 400
                 </span>
               </div>
             </div>
 
             {/* Copy CSS Button */}
-            <button
-              onClick={handleCopyCSS}
-              className="w-full flex items-center justify-center gap-2.5 bg-[#4cede1] hover:bg-[#3dd9ce] active:bg-[#2ebfb5] text-[#030303] font-semibold tracking-wide rounded-2xl transition-all duration-200 shadow-[0_4px_32px_rgba(76,237,225,0.12)] hover:shadow-[0_4px_40px_rgba(76,237,225,0.22)] cursor-pointer"
-              style={{ fontSize: '12px', padding: '1rem 1.5rem' }}
-            >
-              {copied ? (
-                <>
-                  <Check style={{ width: '16px', height: '16px' }} />
-                  Copied to Clipboard
-                </>
-              ) : (
-                <>
-                  <Copy style={{ width: '16px', height: '16px' }} />
-                  Copy CSS Styles
-                </>
-              )}
-            </button>
+            <div className="flex justify-center w-full" style={{ marginTop: '0.25rem' }}>
+              <button
+                onClick={handleCopyCSS}
+                className="w-full max-w-[280px] flex items-center justify-center gap-2.5 bg-gradient-to-r from-[#4cede1] to-[#36d6cb] text-[#030303] font-bold tracking-wide rounded-xl cursor-pointer shadow-[0_4px_24px_rgba(76,237,225,0.15)] hover:shadow-[0_4px_32px_rgba(76,237,225,0.3)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[2px] active:translate-y-0 active:scale-[0.98]"
+                style={{ fontSize: '12px', padding: '0.875rem 1.5rem' }}
+              >
+                {copied ? (
+                  <>
+                    <Check style={{ width: '15px', height: '15px' }} />
+                    Copied to Clipboard
+                  </>
+                ) : (
+                  <>
+                    <Copy style={{ width: '15px', height: '15px' }} />
+                    Copy CSS Styles
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* RIGHT: Live Preview Canvas ──────────────────── */}
-          <div className="relative">
-            {/* Ambient glow */}
-            <div className="absolute rounded-3xl pointer-events-none bg-gradient-to-br from-purple-600/8 via-cyan-500/6 to-transparent blur-3xl" style={{ inset: '-1.5rem' }} />
+          <div className="relative h-full flex flex-col">
+            {/* Ambient glows */}
+            <div className="absolute -inset-6 rounded-[2.5rem] pointer-events-none bg-[radial-gradient(circle_at_70%_20%,rgba(168,85,247,0.14),transparent_50%)] blur-[40px] z-0" />
+            <div className="absolute -inset-6 rounded-[2.5rem] pointer-events-none bg-[radial-gradient(circle_at_20%_80%,rgba(6,182,212,0.08),transparent_50%)] blur-[40px] z-0" />
 
             <div
-              className="relative rounded-2xl border border-white/[0.07] bg-[#0d0d14] flex flex-col overflow-hidden"
+              className="relative z-10 rounded-2xl border border-white/[0.07] bg-[#0d0d14]/90 backdrop-blur-xl flex flex-col overflow-hidden flex-grow transition-all duration-500 hover:border-white/[0.1]"
               style={{ minHeight: '100%' }}
             >
               {/* Top shimmer */}
               <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" style={{ height: '1px' }} />
 
               {/* Canvas Topbar */}
-              <div className="flex justify-between items-center border-b border-white/[0.05]" style={{ padding: '1.25rem 2rem' }}>
+              <div className="flex justify-between items-center border-b border-white/[0.05]" style={{ padding: '1.25rem 3rem' }}>
                 <div className="flex items-center gap-2">
                   <span className="rounded-full bg-[#4cede1]/60 animate-pulse" style={{ width: '6px', height: '6px' }} />
                   <span className="text-[9px] font-mono tracking-[0.3em] text-neutral-600 uppercase">
@@ -415,18 +428,18 @@ function LivePreviewSandbox() {
               </div>
 
               {/* Live Typography Content */}
-              <div className="flex-1 flex flex-col justify-center" style={{ padding: '3rem 2.5rem' }}>
+              <div className="flex-1 flex flex-col justify-center" style={{ padding: '4rem 3rem' }}>
                 <h1
-                  className={`text-white leading-[1.08] ${current.headlineClass}`}
-                  style={{ fontFamily: current.headlineFont, fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', marginBottom: '1.25rem' }}
+                  className={`text-white leading-[1.14] tracking-tight ${current.headlineClass}`}
+                  style={{ fontFamily: current.headlineFont, fontSize: 'clamp(1.85rem, 3.2vw, 3.125rem)', marginBottom: '1rem' }}
                 >
                   {displayedHeading}
                   <span className="inline-block bg-[#4cede1] animate-pulse align-middle" style={{ width: '3px', height: '0.85em', marginLeft: '4px' }} />
                 </h1>
 
                 <p
-                  className={`text-neutral-500 leading-relaxed ${current.bodyClass}`}
-                  style={{ fontFamily: current.bodyFont, fontSize: 'clamp(0.875rem, 1.1vw, 1rem)', maxWidth: '80%', marginBottom: '1.75rem' }}
+                  className={`text-neutral-400/90 leading-relaxed tracking-wide ${current.bodyClass}`}
+                  style={{ fontFamily: current.bodyFont, fontSize: 'clamp(0.875rem, 1.05vw, 0.975rem)', maxWidth: '85%', marginBottom: '2rem' }}
                 >
                   {displayedBody}
                 </p>
@@ -435,7 +448,7 @@ function LivePreviewSandbox() {
                 <div>
                   <span
                     style={{ fontFamily: current.bodyFont, fontSize: '11px', padding: '0.625rem 1.25rem' }}
-                    className="inline-flex items-center gap-2 border border-white/[0.09] bg-white/[0.04] rounded-full font-medium text-neutral-400 pointer-events-none"
+                    className="inline-flex items-center gap-2 border border-white/[0.08] bg-white/[0.03] rounded-full font-medium text-neutral-400 transition-all duration-300 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.15] cursor-default select-none"
                   >
                     Explore this typeface
                     <ArrowRight style={{ width: '12px', height: '12px' }} />
@@ -444,7 +457,7 @@ function LivePreviewSandbox() {
               </div>
 
               {/* Canvas Footer */}
-              <div className="flex justify-between items-center border-t border-white/[0.05]" style={{ padding: '0.875rem 2rem' }}>
+              <div className="flex justify-between items-center border-t border-white/[0.05]" style={{ padding: '1rem 3rem' }}>
                 <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-700 uppercase">fontpair.co</span>
                 <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-700 uppercase">Live Preview</span>
               </div>
@@ -526,27 +539,95 @@ function PreviewPairing() {
 /* Card 3: Side-by-Side Compare */
 function PreviewCompare() {
   return (
-    <div className="flex flex-col gap-3 h-full">
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] flex-1" style={{ padding: '1.25rem' }}>
-        <p className="text-[9px] font-mono tracking-[0.2em] text-neutral-600 uppercase" style={{ marginBottom: '1rem' }}>Metrics Comparison</p>
-        <div className="flex gap-4">
-          <div className="flex-1 text-center">
-            <p className="text-white" style={{ fontFamily: 'Inter', fontSize: '2.5rem', lineHeight: 1 }}>Ag</p>
-            <p className="text-[9px] font-mono text-neutral-600" style={{ marginTop: '0.5rem' }}>Inter · x-height: 1096</p>
+    <div className="flex flex-col gap-4 h-full w-full">
+      {/* Visual Canvas Card */}
+      <div className="rounded-xl border border-white/[0.06] bg-[#09090e]/60 backdrop-blur-md flex-1 flex flex-col justify-between overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.4)] transition-all duration-300 hover:border-white/[0.1]" style={{ padding: '1.5rem' }}>
+        <div className="flex justify-between items-center" style={{ marginBottom: '1.25rem' }}>
+          <p className="text-[9px] font-mono tracking-[0.25em] text-[#4cede1]/80 uppercase font-semibold">Metrics Inspector</p>
+          <span className="text-[8px] font-mono text-neutral-600 uppercase tracking-widest">Active side-by-side comparison</span>
+        </div>
+
+        {/* The Glyphs Side-by-Side Grid */}
+        <div className="grid grid-cols-2 gap-6 items-center" style={{ minHeight: '180px' }}>
+          
+          {/* Left Font Specimen */}
+          <div className="relative rounded-lg border border-white/[0.04] bg-white/[0.01] h-[190px] overflow-hidden flex flex-col justify-center items-center transition-all duration-300 hover:bg-white/[0.02]">
+            {/* Typographic Axis Guides */}
+            <div className="absolute inset-x-0 top-[25%] border-t border-dashed border-white/[0.06] pointer-events-none">
+              <span className="absolute right-2 -top-2 text-[7px] font-mono text-neutral-600 uppercase tracking-wider">CAP HEIGHT</span>
+            </div>
+            <div className="absolute inset-x-0 top-[48%] border-t border-dashed border-[#4cede1]/10 pointer-events-none">
+              <span className="absolute left-2 -top-2 text-[7px] font-mono text-[#4cede1]/50 uppercase tracking-wider">X-HEIGHT</span>
+            </div>
+            <div className="absolute inset-x-0 top-[75%] border-t border-white/[0.08] pointer-events-none">
+              <span className="absolute right-2 -top-2 text-[7px] font-mono text-neutral-500 uppercase tracking-wider font-medium">BASELINE</span>
+            </div>
+
+            {/* Glyph Showcase */}
+            <div className="z-10 flex flex-col items-center justify-center h-full pt-2">
+              <p className="text-white leading-none tracking-tight select-none drop-shadow-[0_0_12px_rgba(255,255,255,0.05)]" style={{ fontFamily: 'Inter', fontSize: '3.75rem', fontWeight: 500 }}>
+                Ag
+              </p>
+              <div className="absolute bottom-3 left-3 flex flex-col gap-0.5">
+                <span className="text-[9px] font-medium text-neutral-300 leading-none">Inter</span>
+                <span className="text-[8px] font-mono text-[#4cede1] leading-none">x-height: 1096</span>
+              </div>
+              <span className="absolute bottom-3 right-3 text-[8px] font-mono text-neutral-600 leading-none">SANS-SERIF</span>
+            </div>
           </div>
-          <div className="bg-white/[0.06]" style={{ width: '1px' }} />
-          <div className="flex-1 text-center">
-            <p className="text-white" style={{ fontFamily: 'Space Grotesk', fontSize: '2.5rem', lineHeight: 1 }}>Ag</p>
-            <p className="text-[9px] font-mono text-neutral-600" style={{ marginTop: '0.5rem' }}>Space Grotesk · x-height: 1060</p>
+
+          {/* Right Font Specimen */}
+          <div className="relative rounded-lg border border-white/[0.04] bg-white/[0.01] h-[190px] overflow-hidden flex flex-col justify-center items-center transition-all duration-300 hover:bg-white/[0.02]">
+            {/* Typographic Axis Guides */}
+            <div className="absolute inset-x-0 top-[25%] border-t border-dashed border-white/[0.06] pointer-events-none">
+              <span className="absolute right-2 -top-2 text-[7px] font-mono text-neutral-600 uppercase tracking-wider">CAP HEIGHT</span>
+            </div>
+            <div className="absolute inset-x-0 top-[52%] border-t border-dashed border-purple-500/10 pointer-events-none">
+              <span className="absolute left-2 -top-2 text-[7px] font-mono text-purple-400/60 uppercase tracking-wider">X-HEIGHT</span>
+            </div>
+            <div className="absolute inset-x-0 top-[75%] border-t border-white/[0.08] pointer-events-none">
+              <span className="absolute right-2 -top-2 text-[7px] font-mono text-neutral-500 uppercase tracking-wider font-medium">BASELINE</span>
+            </div>
+
+            {/* Glyph Showcase */}
+            <div className="z-10 flex flex-col items-center justify-center h-full pt-2">
+              <p className="text-white leading-none tracking-tight select-none drop-shadow-[0_0_12px_rgba(255,255,255,0.05)]" style={{ fontFamily: 'Space Grotesk', fontSize: '3.75rem', fontWeight: 500 }}>
+                Ag
+              </p>
+              <div className="absolute bottom-3 left-3 flex flex-col gap-0.5">
+                <span className="text-[9px] font-medium text-neutral-300 leading-none">Space Grotesk</span>
+                <span className="text-[8px] font-mono text-purple-300 leading-none">x-height: 1060</span>
+              </div>
+              <span className="absolute bottom-3 right-3 text-[8px] font-mono text-neutral-600 leading-none">GEOMETRIC</span>
+            </div>
           </div>
+
         </div>
       </div>
-      <div className="flex gap-3">
-        {[{ label: 'Cap Height', a: '1456', b: '1430' }, { label: 'Ascender', a: '2048', b: '2000' }, { label: 'Weight Axis', a: '100–900', b: '300–700' }].map((m, i) => (
-          <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.02] flex-1" style={{ padding: '0.875rem' }}>
-            <p className="text-[9px] font-mono text-neutral-600 uppercase" style={{ marginBottom: '0.375rem' }}>{m.label}</p>
-            <p className="text-[11px] font-mono text-white/80">{m.a}</p>
-            <p className="text-[11px] font-mono text-neutral-600">{m.b}</p>
+
+      {/* Metric Cards Bottom */}
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: 'Cap Height', a: '1456', b: '1430', aName: 'Inter', bName: 'Space G.' }, 
+          { label: 'Ascender', a: '2048', b: '2000', aName: 'Inter', bName: 'Space G.' }, 
+          { label: 'Weight Axis', a: '100–900', b: '300–700', aName: 'Inter', bName: 'Space G.' }
+        ].map((m, i) => (
+          <div 
+            key={i} 
+            className="rounded-xl border border-white/[0.05] bg-[#0c0c12]/60 backdrop-blur-md flex flex-col justify-between transition-all duration-300 hover:border-white/[0.1] hover:bg-white/[0.02] hover:-translate-y-[1px]" 
+            style={{ padding: '1.125rem 1.25rem', minHeight: '90px' }}
+          >
+            <p className="text-[9px] font-mono font-semibold tracking-[0.25em] text-neutral-500 uppercase">{m.label}</p>
+            <div className="flex flex-col gap-1.5" style={{ marginTop: '0.75rem' }}>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] text-neutral-500 font-mono font-light">{m.aName}</span>
+                <span className="text-[11px] font-mono font-semibold text-white/90">{m.a}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] text-neutral-500 font-mono font-light">{m.bName}</span>
+                <span className="text-[11px] font-mono font-semibold text-[#4cede1]">{m.b}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -670,6 +751,7 @@ const FEATURES = [
    Page Component
 ──────────────────────────────────────────────────────── */
 export default function LandingPage() {
+  const navigate = useNavigate()
 
 
   // Initialize Lenis smooth scroll
@@ -704,7 +786,7 @@ export default function LandingPage() {
       <FuturisticBackground />
 
       {/* 1. HERO SECTION */}
-      <section className="w-full flex flex-col items-center justify-center relative z-20 text-center px-6" style={{ minHeight: '90vh', paddingTop: '6rem', paddingBottom: '4rem' }}>
+      <section className="w-full flex flex-col items-center justify-center relative z-20 text-center px-6" style={{ minHeight: '90vh', paddingTop: '9rem', paddingBottom: '4.5rem' }}>
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -744,23 +826,23 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center z-30"
-          style={{ marginBottom: '4rem' }}
+          style={{ marginBottom: '4.5rem' }}
         >
-          <a
-            href="#sandbox"
+          <button
+            onClick={() => navigate('/home')}
             className="flex items-center gap-2.5 bg-white text-[#030303] hover:bg-neutral-100 transition-all duration-200 font-semibold rounded-full cursor-pointer shadow-[0_4px_40px_rgba(255,255,255,0.1)] hover:shadow-[0_4px_60px_rgba(255,255,255,0.18)]"
             style={{ padding: '1rem 2rem', fontSize: '0.9375rem' }}
           >
-            Start Pairing
+            Get Started
             <ArrowRight style={{ width: '18px', height: '18px' }} />
-          </a>
-          <a
-            href="#features"
-            className="flex items-center gap-2.5 border border-white/12 hover:border-white/25 hover:bg-white/5 transition-all duration-200 text-white font-medium rounded-full cursor-pointer"
+          </button>
+          <button
+            onClick={() => navigate('/home')}
+            className="flex items-center gap-2.5 border border-white/12 hover:border-white/25 hover:bg-white/5 transition-all duration-200 text-white font-medium rounded-full cursor-pointer bg-transparent"
             style={{ padding: '1rem 2rem', fontSize: '0.9375rem' }}
           >
-            Explore Platform
-          </a>
+            Explore Fonts
+          </button>
         </motion.div>
 
         {/* ── Floating Typography Showcase ──────────────── */}
@@ -798,11 +880,15 @@ export default function LandingPage() {
       </div>
 
       {/* 3. TYPOGRAPHY COMPARISON SHOWCASE */}
-      <section className="w-full relative z-20 flex flex-col items-center" style={{ padding: '6rem 1.5rem 4rem' }}>
-        <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto' }}>
+      <section className="w-full relative z-20 flex flex-col items-center" style={{ padding: '7rem 2rem 5rem' }}>
+        <div style={{ maxWidth: '1240px', width: '100%', margin: '0 auto', relative: 'true' }}>
           
+          {/* Ambient Glows */}
+          <div className="absolute rounded-full pointer-events-none bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.06),transparent_65%)] blur-[100px] z-0" style={{ width: '80%', height: '80%', left: '10%', top: '10%' }} />
+          <div className="absolute rounded-full pointer-events-none bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.04),transparent_60%)] blur-[80px] z-0" style={{ width: '60%', height: '60%', left: '20%', top: '20%' }} />
+
           {/* Section Header */}
-          <div className="text-center" style={{ marginBottom: '4rem' }}>
+          <div className="text-center relative z-10" style={{ marginBottom: '4rem' }}>
             <span className="text-[10px] font-mono tracking-[0.35em] text-[#4cede1]/70 uppercase block" style={{ marginBottom: '1rem' }}>
               Visual Analysis
             </span>
@@ -816,25 +902,25 @@ export default function LandingPage() {
 
           {/* Main Feature Box: Premium Glassmorphism Card */}
           <div
-            className="w-full relative rounded-2xl border border-white/[0.07] bg-[#0c0c12]/80 backdrop-blur-2xl overflow-hidden shadow-2xl"
+            className="w-full relative rounded-2xl border border-white/[0.09] bg-[#0c0c12]/90 backdrop-blur-3xl overflow-hidden shadow-[0_32px_60px_-15px_rgba(0,0,0,0.8)] z-10 transition-all duration-500 hover:border-white/[0.12]"
             style={{ minHeight: '480px' }}
           >
             {/* Top shimmer highlight line */}
-            <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/8 to-transparent" style={{ height: '1px' }} />
+            <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-transparent via-white/12 to-transparent" style={{ height: '1px' }} />
 
             {/* Split layout (2 columns on md/lg, 1 on mobile) */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0' }} className="md:!grid-cols-[2fr_3fr]">
 
               {/* Left Side Content: Explanation */}
-              <div className="flex flex-col justify-between" style={{ padding: '3rem 2.5rem' }}>
+              <div className="flex flex-col justify-between" style={{ padding: '3.5rem 3rem' }}>
                 <div>
-                  <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-600 uppercase block" style={{ marginBottom: '1rem' }}>
+                  <span className="text-[9px] font-mono tracking-[0.28em] text-[#4cede1]/80 font-semibold uppercase block" style={{ marginBottom: '1rem' }}>
                     Metrics Inspector
                   </span>
-                  <h3 className="text-white font-light tracking-tight leading-tight" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', marginBottom: '1.25rem' }}>
+                  <h3 className="text-white font-normal tracking-tight leading-tight" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', marginBottom: '1rem' }}>
                     Compare Visual Metrics
                   </h3>
-                  <p className="text-neutral-400 font-light leading-relaxed" style={{ fontSize: '0.9375rem', marginBottom: '2rem' }}>
+                  <p className="text-neutral-400/90 font-light leading-relaxed" style={{ fontSize: '0.9375rem', marginBottom: '2rem' }}>
                     Anatomical metrics dictate how a font feels at scale. Match visual rhythm, track letter spacing, and build consistent typographic contrasts seamlessly.
                   </p>
 
@@ -846,8 +932,8 @@ export default function LandingPage() {
                       'Match visual weight & visual rhythm',
                       'Build high-fidelity, responsive scales'
                     ].map((bullet, i) => (
-                      <li key={i} className="flex items-center gap-3 text-neutral-500 font-light" style={{ fontSize: '0.875rem' }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#4cede1]/70" />
+                      <li key={i} className="flex items-center gap-3 text-neutral-400/80 font-light transition-all duration-300 hover:text-white" style={{ fontSize: '0.875rem' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#4cede1]/60 shadow-[0_0_8px_rgba(76,237,225,0.4)]" />
                         {bullet}
                       </li>
                     ))}
@@ -861,7 +947,7 @@ export default function LandingPage() {
               </div>
 
               {/* Right Side Content: Typography Comparison Preview */}
-              <div className="border-t md:border-t-0 md:border-l border-white/[0.05] flex flex-col justify-center bg-[#07070c]/30" style={{ padding: '2.5rem 2rem' }}>
+              <div className="border-t md:border-t-0 md:border-l border-white/[0.05] flex flex-col justify-center bg-[#07070c]/50" style={{ padding: '3rem 2.5rem' }}>
                 <PreviewCompare />
               </div>
 
@@ -922,14 +1008,14 @@ export default function LandingPage() {
           <p className="text-neutral-500 font-light leading-relaxed mx-auto" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 1.05rem)', maxWidth: '480px', marginBottom: '2.5rem' }}>
             Join the typographic vanguard. Start pairing, comparing, and compiling flawless layouts.
           </p>
-          <a
-            href="#sandbox"
-            className="inline-flex items-center gap-2.5 bg-[#4cede1] hover:bg-[#5df3e8] text-[#030303] font-semibold rounded-full transition-all duration-200 cursor-pointer"
+          <button
+            onClick={() => navigate('/home')}
+            className="inline-flex items-center gap-2.5 bg-[#4cede1] hover:bg-[#5df3e8] text-[#030303] font-semibold rounded-full transition-all duration-200 cursor-pointer border-none"
             style={{ padding: '0.875rem 2rem', fontSize: '0.875rem', boxShadow: '0 4px 30px rgba(76,237,225,0.2), 0 0 60px rgba(76,237,225,0.06)' }}
           >
             Enter the Sandbox
             <ArrowRight style={{ width: '16px', height: '16px' }} />
-          </a>
+          </button>
         </div>
       </section>
 
@@ -955,16 +1041,30 @@ export default function LandingPage() {
 
             {/* Center: Nav links */}
             <div className="flex items-center gap-8">
-              {['Sandbox', 'Features', 'GitHub'].map((link, i) => (
-                <a
-                  key={i}
-                  href={link === 'Sandbox' ? '#sandbox' : link === 'Features' ? '#features' : '#'}
-                  className="text-neutral-500 hover:text-white transition-colors duration-200 font-light"
-                  style={{ fontSize: '0.8125rem' }}
-                >
-                  {link}
-                </a>
-              ))}
+              {['Sandbox', 'Features', 'GitHub'].map((link, i) => {
+                if (link === 'Sandbox') {
+                  return (
+                    <Link
+                      key={i}
+                      to="/home"
+                      className="text-neutral-500 hover:text-white transition-colors duration-200 font-light"
+                      style={{ fontSize: '0.8125rem' }}
+                    >
+                      {link}
+                    </Link>
+                  )
+                }
+                return (
+                  <a
+                    key={i}
+                    href={link === 'Features' ? '#features' : '#'}
+                    className="text-neutral-500 hover:text-white transition-colors duration-200 font-light"
+                    style={{ fontSize: '0.8125rem' }}
+                  >
+                    {link}
+                  </a>
+                )
+              })}
             </div>
 
             {/* Right: Copyright */}
