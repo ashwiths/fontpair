@@ -115,7 +115,7 @@ function HeroShowcase() {
       </div>
 
       {/* Preview Content */}
-      <div style={{ padding: '2.5rem 2rem' }}>
+      <div style={{ padding: '2.5rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={idx}
@@ -123,16 +123,17 @@ function HeroShowcase() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.35 }}
+            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
           >
             <h3
               className={`text-white leading-tight ${pair.headClass}`}
-              style={{ fontFamily: pair.headFont, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', marginBottom: '0.75rem' }}
+              style={{ fontFamily: pair.headFont, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', marginBottom: '0.75rem', textAlign: 'center' }}
             >
               {pair.heading}
             </h3>
             <p
-              className="text-neutral-500 font-light leading-relaxed"
-              style={{ fontFamily: pair.bodyFont, fontSize: '0.875rem', maxWidth: '80%' }}
+              className="text-neutral-500 font-light leading-relaxed text-center"
+              style={{ fontFamily: pair.bodyFont, fontSize: '0.875rem', maxWidth: '80%', margin: '0 auto' }}
             >
               Preview how this typography combination renders across different content densities and layout contexts.
             </p>
@@ -1002,7 +1003,7 @@ export default function LandingPage() {
             Elevate Your Type. <br />
             Define Your Interface.
           </h2>
-          <p className="text-neutral-500 font-light leading-relaxed mx-auto" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 1.05rem)', maxWidth: '480px', marginBottom: '2.5rem' }}>
+          <p className="text-neutral-500 font-light leading-relaxed mx-auto text-center" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 1.05rem)', maxWidth: '480px', marginBottom: '2.5rem', textAlign: 'center' }}>
             Join the typographic vanguard. Start pairing, comparing, and compiling flawless layouts.
           </p>
           <button
