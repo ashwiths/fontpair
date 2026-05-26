@@ -146,7 +146,7 @@ export default function FavoritesPage({ darkMode, setDarkMode }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #05010d',
+      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #030303',
       color: '#ffffff',
       position: 'relative',
       overflow: 'hidden',
