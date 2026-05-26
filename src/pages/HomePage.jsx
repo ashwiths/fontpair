@@ -45,7 +45,7 @@ function FontCard({ font, previewText, favorites, onToggleFavorite }) {
       {/* Left: Font Meta Info */}
       <div style={{ minWidth: '150px', flexShrink: 0 }}>
         <h3 style={{
-          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          fontFamily: 'Inter, sans-serif',
           fontWeight: 700,
           fontSize: '1rem',
           color: '#ffffff',
@@ -200,7 +200,7 @@ export default function HomePage({ darkMode, setDarkMode }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #05010d',
+      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #030303',
       color: '#ffffff',
       position: 'relative',
       overflow: 'hidden',
@@ -255,9 +255,9 @@ export default function HomePage({ darkMode, setDarkMode }) {
           <div style={{ maxWidth: '900px', width: '100%', margin: '0 auto' }}>
             <h1 style={{
               fontSize: 'clamp(2.2rem, 5.5vw, 4.5rem)',
-              fontWeight: 800,
+              fontWeight: 300,
               lineHeight: 1.1,
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.045em',
               marginBottom: '1rem',
               color: '#ffffff',
             }}
@@ -436,7 +436,7 @@ export default function HomePage({ darkMode, setDarkMode }) {
           {filtered.length === 0 && (
             <div style={{ textAlign: 'center', padding: '5rem 2rem' }}>
               <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔍</div>
-              <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.5rem' }}>
                 No match found
               </h3>
               <p style={{ color: '#71717a' }}>Try updating your search query or categories.</p>

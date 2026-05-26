@@ -28,8 +28,8 @@
 }
 
 .dark {
-  --bg: #05010d;
-  --navbar-bg: rgba(5, 1, 13, 0.92);
+  --bg: #030303;
+  --navbar-bg: rgba(3, 3, 3, 0.92);
   --bg-card: #0e0a1a;
   --bg-card-hover: #140e26;
   --text-primary: #F3EEFF;
@@ -72,16 +72,16 @@ body {
 
 /* ─── Typography Utilities ─────────────────────────────── */
 .heading-display {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.04em;
   line-height: 1.1;
 }
 
 .heading-h1 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.035em;
   line-height: 1.15;
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Copy, Check, Sparkles, Heart, Layers, Eye } from 'lucide-react'
+import { ArrowRight, Copy, Check, Sparkles, Heart, Layers, Eye, Github, Linkedin, Mail } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import Lenis from 'lenis'
 
@@ -1017,57 +1017,78 @@ export default function LandingPage() {
       </section>
 
       {/* 6. FOOTER */}
-      <footer className="w-full relative z-20 flex justify-center" style={{ padding: '0 1.5rem' }}>
-        {/* Glow divider */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2" style={{ width: '320px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(76,237,225,0.12), transparent)' }} />
-
-        <div className="w-full" style={{ maxWidth: '1200px', paddingTop: '4rem', paddingBottom: '3rem' }}>
-          {/* Footer top border */}
-          <div className="bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" style={{ height: '1px', marginBottom: '3rem' }} />
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4">
-            {/* Left: Brand */}
-            <div className="flex flex-col items-center md:items-start gap-1.5">
-              <span className="text-white font-semibold tracking-[0.15em] font-mono" style={{ fontSize: '0.8125rem' }}>
-                fontpair.co
-              </span>
-              <span className="text-neutral-600 font-light" style={{ fontSize: '0.75rem' }}>
-                Typography for the modern web.
-              </span>
-            </div>
-
-            {/* Center: Nav links */}
-            <div className="flex items-center gap-8">
-              {['Sandbox', 'Features', 'GitHub'].map((link, i) => {
-                if (link === 'Sandbox') {
-                  return (
-                    <Link
-                      key={i}
-                      to="/home"
-                      className="text-neutral-500 hover:text-white transition-colors duration-200 font-light"
-                      style={{ fontSize: '0.8125rem' }}
-                    >
-                      {link}
-                    </Link>
-                  )
-                }
-                return (
-                  <a
-                    key={i}
-                    href={link === 'Features' ? '#features' : '#'}
-                    className="text-neutral-500 hover:text-white transition-colors duration-200 font-light"
-                    style={{ fontSize: '0.8125rem' }}
-                  >
-                    {link}
-                  </a>
-                )
-              })}
-            </div>
-
-            {/* Right: Copyright */}
-            <span className="text-neutral-700 font-light text-center md:text-right" style={{ fontSize: '0.6875rem' }}>
-              © 2026 fontpair.co — All rights reserved.
+      <footer style={{ borderTop: '1px solid rgba(255, 255, 255, 0.04)', padding: '2.5rem 0', width: '100%', position: 'relative', zIndex: 20 }}>
+        <div className="section-container" style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 2rem', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          flexWrap: 'wrap', 
+          gap: '2rem' 
+        }}>
+          {/* Left: Signature & Made with */}
+          <div className="flex flex-col gap-1" style={{ minWidth: '220px' }}>
+            <span style={{ 
+              fontFamily: '"Dancing Script", cursive', 
+              fontSize: '1.4rem', 
+              fontWeight: 700, 
+              color: '#C084FC',
+              letterSpacing: '0.02em'
+            }}>
+              Infant Ashil A
             </span>
+            <span style={{ color: '#72689c', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              Made with <Heart size={11} style={{ color: '#EF4444', display: 'inline' }} fill="#EF4444" /> and a lot of ☕
+            </span>
+          </div>
+
+          {/* Center: Social Icons */}
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', alignItems: 'center' }}>
+            {[
+              { icon: <Github size={16} />, href: 'https://github.com/' },
+              { icon: <Linkedin size={16} />, href: 'https://www.linkedin.com/in/infant-ashil-a-b88a39361/' },
+              { icon: <Mail size={16} />, href: 'mailto:infantashil.a@gmail.com' }
+            ].map((social, idx) => (
+              <a
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.015)',
+                  border: '1px solid rgba(255, 255, 255, 0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#72689c',
+                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#C084FC';
+                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.3)';
+                  e.currentTarget.style.background = 'rgba(139, 92, 246, 0.06)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#72689c';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.015)';
+                  e.currentTarget.style.transform = 'none';
+                }}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+
+          {/* Right: Copyright */}
+          <div style={{ color: '#52525b', fontSize: '0.8rem', textAlign: 'right', minWidth: '220px' }}>
+            © 2026 Infant Ashil A
           </div>
         </div>
       </footer>

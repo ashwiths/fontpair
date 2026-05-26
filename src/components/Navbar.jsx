@@ -73,10 +73,10 @@ export default function Navbar({
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 4px 14px rgba(124, 77, 255, 0.35)',
             }}>
-              <span style={{ color: 'white', fontWeight: 800, fontSize: '1rem', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>F</span>
+              <span style={{ color: 'white', fontWeight: 800, fontSize: '1rem', fontFamily: 'Inter, sans-serif' }}>F</span>
             </div>
             <span style={{
-              fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '20px',
+              fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '20px',
               color: 'var(--text-primary)', letterSpacing: '-0.02em',
             }}>
               Font Style <span style={{ color: 'var(--primary)' }}>Changer</span>

@@ -63,7 +63,7 @@ function FavCard({ name, onRemove }) {
       </div>
 
       {/* Font name */}
-      <p style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: '0.9rem', color: '#ffffff', marginBottom: '6px' }}>
+      <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#ffffff', marginBottom: '6px' }}>
         {name}
       </p>
       <span style={{
@@ -182,7 +182,7 @@ export default function FavoritesPage({ darkMode, setDarkMode }) {
             }}>
               <Heart size={12} fill="currentColor" /> Saved Fonts
             </span>
-            <h1 className="heading-h1" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#ffffff', marginBottom: '0.75rem', fontWeight: 800 }}>
+            <h1 className="heading-h1" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#ffffff', marginBottom: '0.75rem', fontWeight: 300, letterSpacing: '-0.04em' }}>
               Your <span style={{
                 background: 'linear-gradient(135deg, #ffffff 10%, #C084FC 50%, #8B5CF6 100%)',
                 WebkitBackgroundClip: 'text',
@@ -224,8 +224,8 @@ export default function FavoritesPage({ darkMode, setDarkMode }) {
               </div>
 
               <h2 style={{
-                fontFamily: 'Plus Jakarta Sans', fontWeight: 700,
-                fontSize: '1.75rem', color: '#ffffff', marginBottom: '0.875rem',
+                fontFamily: 'Inter, sans-serif', fontWeight: 300,
+                fontSize: '1.75rem', color: '#ffffff', marginBottom: '0.875rem', letterSpacing: '-0.035em',
               }}>
                 No favorites yet
               </h2>

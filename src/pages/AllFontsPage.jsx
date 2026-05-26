@@ -63,7 +63,7 @@ function FontGridCard({ font, favorites, onToggle }) {
         {/* Header Row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
           <div>
-            <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '1.1rem', color: '#ffffff', marginBottom: '6px', letterSpacing: '-0.015em' }}>
+            <h3 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '1.1rem', color: '#ffffff', marginBottom: '6px', letterSpacing: '-0.015em' }}>
               {font.name}
             </h3>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -199,16 +199,9 @@ export default function AllFontsPage({ darkMode, setDarkMode }) {
     try { return new Set(JSON.parse(localStorage.getItem('fsc_favorites') || '[]')) }
     catch { return new Set() }
   })
-  const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 768)
   const [searchOpen, setSearchOpen] = useState(false)
 
   const listContainerRef = useRef(null)
-
-  useEffect(() => {
-    const onResize = () => setShowSidebar(window.innerWidth >= 768)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
 
   const toggleFavorite = (name) => {
     setFavorites(prev => {
@@ -233,14 +226,12 @@ export default function AllFontsPage({ darkMode, setDarkMode }) {
       })
   }, [search, activeCategory, activeFilter])
 
-  // Responsive column counts (Change from 3-column grid to 2-column grid for premium editorial spacing)
+  // Responsive column counts (3 columns on desktop, 2 on tablet, 1 on mobile)
   const getColumnCount = useCallback((width) => {
-    if (showSidebar) {
-      return width >= 1000 ? 2 : 1
-    } else {
-      return width >= 600 ? 2 : 1
-    }
-  }, [showSidebar])
+    if (width >= 1100) return 3
+    if (width >= 700) return 2
+    return 1
+  }, [])
 
   // Grid Virtualization (itemHeight: 312px represents 288px card + 24px gap)
   const { visibleItems, containerStyle } = useGridVirtualList(listContainerRef, filtered, 312, getColumnCount, 6)
@@ -255,7 +246,7 @@ export default function AllFontsPage({ darkMode, setDarkMode }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #05010d',
+      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.08), transparent 50%), #030303',
       color: '#ffffff',
       position: 'relative',
       overflowX: 'hidden',
@@ -291,7 +282,7 @@ export default function AllFontsPage({ darkMode, setDarkMode }) {
             }}>
               <Filter size={12} /> Explore Collection
             </span>
-            <h1 className="heading-h1" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', color: '#ffffff', marginBottom: '0.75rem', fontWeight: 800, letterSpacing: '-0.025em' }}>
+            <h1 className="heading-h1" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', color: '#ffffff', marginBottom: '0.75rem', fontWeight: 300, letterSpacing: '-0.045em' }}>
               Explore <span style={{
                 background: 'linear-gradient(135deg, #ffffff 10%, #C084FC 50%, #8B5CF6 100%)',
                 WebkitBackgroundClip: 'text',
@@ -351,152 +342,152 @@ export default function AllFontsPage({ darkMode, setDarkMode }) {
               }}
             />
           </div>
+
+          {/* Line by line Filter Box below the search bar */}
+          <div style={{
+            maxWidth: '1000px',
+            margin: '1.5rem auto 0 auto',
+            background: 'rgba(255, 255, 255, 0.015)',
+            border: '1px solid rgba(255, 255, 255, 0.04)',
+            borderRadius: '24px',
+            padding: '1.5rem 1.75rem',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.25rem',
+            textAlign: 'left',
+          }}>
+            {/* Row 1: Filters */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#72689c', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Filter
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {sidebarFilters.map(f => (
+                  <button
+                    key={f.id}
+                    id={`filter-${f.id}`}
+                    onClick={() => setActiveFilter(f.id)}
+                    style={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '12px',
+                      fontSize: '0.85rem',
+                      fontWeight: activeFilter === f.id ? 600 : 500,
+                      color: activeFilter === f.id ? '#C084FC' : '#72689c',
+                      background: activeFilter === f.id ? 'rgba(139, 92, 246, 0.08)' : 'transparent',
+                      border: activeFilter === f.id ? '1px solid rgba(139, 92, 246, 0.15)' : '1px solid rgba(255, 255, 255, 0.03)',
+                      fontFamily: 'Inter, sans-serif',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activeFilter !== f.id) {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                        e.currentTarget.style.color = '#ffffff'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activeFilter !== f.id) {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = '#72689c'
+                      }
+                    }}
+                  >
+                    {f.icon} {f.label}
+                    <span style={{
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      color: activeFilter === f.id ? '#C084FC' : '#72689c',
+                      background: 'rgba(0,0,0,0.25)',
+                      padding: '1px 6px',
+                      borderRadius: '99px',
+                    }}>
+                      {f.count}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Separator line between rows */}
+            <div style={{ height: '1px', background: 'rgba(255, 255, 255, 0.04)' }} />
+
+            {/* Row 2: Categories */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#72689c', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Categories
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat}
+                    id={`filter-cat-${cat.replace(/\s+/g, '-')}`}
+                    onClick={() => setActiveCategory(cat)}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '0.5rem 0.9rem',
+                      borderRadius: '10px',
+                      fontSize: '0.82rem',
+                      fontWeight: activeCategory === cat ? 600 : 500,
+                      color: activeCategory === cat ? '#C084FC' : '#72689c',
+                      background: activeCategory === cat ? 'rgba(139, 92, 246, 0.08)' : 'transparent',
+                      border: activeCategory === cat ? '1px solid rgba(139, 92, 246, 0.15)' : '1px solid rgba(255, 255, 255, 0.03)',
+                      fontFamily: 'Inter, sans-serif',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activeCategory !== cat) {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                        e.currentTarget.style.color = '#ffffff'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activeCategory !== cat) {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = '#72689c'
+                      }
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main layout */}
-      <div className="section-container" style={{ maxWidth: '1450px', margin: '0 auto', padding: '2.5rem 2rem', display: 'flex', gap: '2.5rem', alignItems: 'flex-start' }}>
-        {/* Sidebar — sticky on medium & large screens */}
-        {showSidebar && (
-          <aside style={{
-            width: '230px', flexShrink: 0, position: 'sticky', top: '100px',
-            background: 'rgba(255, 255, 255, 0.01)', border: '1px solid rgba(255, 255, 255, 0.03)',
-            borderRadius: '24px', padding: '1.75rem',
-            display: 'block',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-          }}
-          >
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#72689c', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>Filter</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.75rem' }}>
-              {sidebarFilters.map(f => (
-                <button
-                  key={f.id}
-                  id={`sidebar-${f.id}`}
-                  onClick={() => setActiveFilter(f.id)}
-                  style={{
-                    width: '100%', textAlign: 'left', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    gap: '10px', padding: '0.7rem 1.1rem', borderRadius: '12px',
-                    fontSize: '0.88rem', fontWeight: activeFilter === f.id ? 600 : 500,
-                    color: activeFilter === f.id ? '#C084FC' : '#72689c',
-                    background: activeFilter === f.id ? 'rgba(139, 92, 246, 0.06)' : 'transparent',
-                    border: activeFilter === f.id ? '1px solid rgba(139, 92, 246, 0.12)' : '1px solid transparent',
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeFilter !== f.id) {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                      e.currentTarget.style.color = '#ffffff'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeFilter !== f.id) {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.color = '#72689c'
-                    }
-                  }}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    {f.icon} {f.label}
-                  </span>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: activeFilter === f.id ? '#C084FC' : '#72689c', background: 'rgba(0,0,0,0.25)', padding: '2px 8px', borderRadius: '99px' }}>
-                    {f.count}
-                  </span>
-                </button>
-              ))}
+      <div className="section-container" style={{ maxWidth: '1450px', margin: '0 auto', padding: '2rem' }}>
+        {/* Result count */}
+        <p style={{ color: '#72689c', fontSize: '0.88rem', marginBottom: '1.5rem', letterSpacing: '0.01em' }}>
+          Showing <strong style={{ color: '#ffffff', fontWeight: 600 }}>{filtered.length}</strong> fonts
+        </p>
+
+        {/* Grid Container (Responsive layout with 24px spacing) */}
+        <div ref={listContainerRef} style={containerStyle}>
+          {visibleItems.map(({ item: font, style }) => (
+            <div key={font.name} style={{ ...style, padding: '12px' }}>
+              <MemoizedFontGridCard
+                font={font}
+                favorites={favorites}
+                onToggle={toggleFavorite}
+              />
             </div>
-
-            <div style={{ height: '1px', background: 'rgba(255, 255, 255, 0.04)', marginBottom: '1.5rem' }} />
-
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#72689c', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem' }}>Categories</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  id={`sidebar-cat-${cat.replace(/\s+/g, '-')}`}
-                  onClick={() => setActiveCategory(cat)}
-                  style={{
-                    width: '100%', textAlign: 'left', cursor: 'pointer',
-                    padding: '0.7rem 1.1rem', borderRadius: '12px',
-                    fontSize: '0.88rem', fontWeight: activeCategory === cat ? 600 : 500,
-                    color: activeCategory === cat ? '#C084FC' : '#72689c',
-                    background: activeCategory === cat ? 'rgba(139, 92, 246, 0.06)' : 'transparent',
-                    border: activeCategory === cat ? '1px solid rgba(139, 92, 246, 0.12)' : '1px solid transparent',
-                    fontFamily: 'Inter, sans-serif',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                      e.currentTarget.style.color = '#ffffff'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.color = '#72689c'
-                    }
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </aside>
-        )}
-
-        {/* Main content */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Category chips (mobile/tablet) */}
-          {!showSidebar && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.75rem' }}>
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  className={`chip ${activeCategory === cat ? 'chip-active' : ''}`}
-                  onClick={() => setActiveCategory(cat)}
-                  style={{
-                    fontSize: '0.8rem', padding: '0.45rem 1.15rem', borderRadius: '99px',
-                    fontFamily: 'Inter, sans-serif', fontWeight: 600, cursor: 'pointer',
-                    background: activeCategory === cat ? '#8B5CF6' : 'rgba(255, 255, 255, 0.01)',
-                    color: activeCategory === cat ? '#ffffff' : '#52525b',
-                    border: activeCategory === cat ? '1px solid #8B5CF6' : '1px solid rgba(255, 255, 255, 0.03)',
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Result count */}
-          <p style={{ color: '#72689c', fontSize: '0.88rem', marginBottom: '1.5rem', letterSpacing: '0.01em' }}>
-            Showing <strong style={{ color: '#ffffff', fontWeight: 600 }}>{filtered.length}</strong> fonts
-          </p>
-
-          {/* Grid Container (2-column layout with 24px spacing) */}
-          <div ref={listContainerRef} style={containerStyle}>
-            {visibleItems.map(({ item: font, style }) => (
-              <div key={font.name} style={{ ...style, padding: '12px' }}>
-                <MemoizedFontGridCard
-                  font={font}
-                  favorites={favorites}
-                  onToggle={toggleFavorite}
-                />
-              </div>
-            ))}
-          </div>
-
-          {filtered.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '6rem 2rem' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1.25rem' }}>🔍</div>
-              <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.5rem' }}>No fonts found</h3>
-              <p style={{ color: '#72689c' }}>Try adjusting your search or filters</p>
-            </div>
-          )}
+          ))}
         </div>
+
+        {filtered.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '6rem 2rem' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1.25rem' }}>🔍</div>
+            <h3 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.5rem' }}>No fonts found</h3>
+            <p style={{ color: '#72689c' }}>Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
     </div>
   )
