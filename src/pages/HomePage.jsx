@@ -343,6 +343,17 @@ export default function HomePage({ darkMode, setDarkMode }) {
         </div>
       </section>
 
+      {/* Divider line */}
+      <div style={{
+        maxWidth: '1100px', margin: '0 auto', padding: '0 2rem',
+        width: '100%', position: 'relative', zIndex: 5,
+      }}>
+        <div style={{
+          height: '1px',
+          background: 'linear-gradient(to right, transparent, rgba(139, 92, 246, 0.25), rgba(192, 132, 252, 0.2), transparent)',
+        }} />
+      </div>
+
       {/* FILTER + FONTS GRID SECTION */}
       <section style={{ position: 'relative', zIndex: 5, paddingBottom: '5rem' }}>
         <div className="section-container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem' }}>
