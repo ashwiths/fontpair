@@ -874,10 +874,7 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* 2. LIVE PREVIEW SECTION */}
-      <div id="sandbox" className="scroll-mt-12 w-full">
-        <LivePreviewSandbox />
-      </div>
+
 
       {/* 3. TYPOGRAPHY COMPARISON SHOWCASE */}
       <section className="w-full relative z-20 flex flex-col items-center" style={{ padding: '7rem 2rem 5rem' }}>
