@@ -121,7 +121,7 @@ export default function AboutPage({ darkMode, setDarkMode }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.1), transparent 50%), radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.04), transparent 45%), #05010d',
+      background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.1), transparent 50%), radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.04), transparent 45%), #030303',
       color: '#ffffff',
       fontFamily: 'Inter, sans-serif',
       overflowX: 'hidden',
@@ -249,7 +249,20 @@ export default function AboutPage({ darkMode, setDarkMode }) {
                   marginBottom: '0.25rem',
                   letterSpacing: '-0.02em',
                 }}>
-                  Infant Ashil A
+                  <a 
+                    href="https://ashil.space" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    style={{ 
+                      color: 'inherit', 
+                      textDecoration: 'none',
+                      transition: 'color 0.25s' 
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#C084FC'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+                  >
+                    Infant Ashil A
+                  </a>
                 </h2>
                 <p style={{
                   color: '#8B5CF6',
@@ -433,15 +446,24 @@ export default function AboutPage({ darkMode, setDarkMode }) {
         }}>
           {/* Left: Signature & Made with */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '220px' }}>
-            <span style={{ 
-              fontFamily: '"Dancing Script", cursive', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#C084FC',
-              letterSpacing: '0.02em'
-            }}>
+            <a 
+              href="https://ashil.space" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                fontFamily: '"Dancing Script", cursive', 
+                fontSize: '1.4rem', 
+                fontWeight: 700, 
+                color: '#C084FC',
+                letterSpacing: '0.02em',
+                textDecoration: 'none',
+                transition: 'opacity 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+            >
               Infant Ashil A
-            </span>
+            </a>
             <span style={{ color: '#72689c', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
               Made with <Heart size={11} style={{ color: '#EF4444', display: 'inline' }} fill="#EF4444" /> and a lot of ☕
             </span>
@@ -491,7 +513,7 @@ export default function AboutPage({ darkMode, setDarkMode }) {
 
           {/* Right: Copyright */}
           <div style={{ color: '#52525b', fontSize: '0.8rem', textAlign: 'right', minWidth: '220px' }}>
-            © 2026 Infant Ashil A
+            © 2026 <a href="https://ashil.space" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.color = '#C084FC'} onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}>Infant Ashil A</a>
           </div>
         </div>
       </footer>

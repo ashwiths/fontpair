@@ -989,7 +989,7 @@ export default function LandingPage() {
       </section>
 
       {/* 5. FINAL CTA SECTION */}
-      <section className="py-32 w-full relative z-20 flex justify-center px-6">
+      <section className="pt-32 pb-56 w-full relative z-20 flex justify-center px-6">
         <div className="w-full border border-white/[0.07] bg-[#0a0a12]/80 backdrop-blur-2xl rounded-2xl relative overflow-hidden text-center" style={{ maxWidth: '900px', padding: 'clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 4rem)' }}>
           {/* Ambient glow */}
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center, rgba(76,237,225,0.03) 0%, transparent 70%)' }} />
@@ -1030,15 +1030,24 @@ export default function LandingPage() {
         }}>
           {/* Left: Signature & Made with */}
           <div className="flex flex-col gap-1" style={{ minWidth: '220px' }}>
-            <span style={{ 
-              fontFamily: '"Dancing Script", cursive', 
-              fontSize: '1.4rem', 
-              fontWeight: 700, 
-              color: '#C084FC',
-              letterSpacing: '0.02em'
-            }}>
+            <a 
+              href="https://ashil.space" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                fontFamily: '"Dancing Script", cursive', 
+                fontSize: '1.4rem', 
+                fontWeight: 700, 
+                color: '#C084FC',
+                letterSpacing: '0.02em',
+                textDecoration: 'none',
+                transition: 'opacity 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+            >
               Infant Ashil A
-            </span>
+            </a>
             <span style={{ color: '#72689c', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
               Made with <Heart size={11} style={{ color: '#EF4444', display: 'inline' }} fill="#EF4444" /> and a lot of ☕
             </span>
@@ -1088,7 +1097,7 @@ export default function LandingPage() {
 
           {/* Right: Copyright */}
           <div style={{ color: '#52525b', fontSize: '0.8rem', textAlign: 'right', minWidth: '220px' }}>
-            © 2026 Infant Ashil A
+            © 2026 <a href="https://ashil.space" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.color = '#C084FC'} onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}>Infant Ashil A</a>
           </div>
         </div>
       </footer>
